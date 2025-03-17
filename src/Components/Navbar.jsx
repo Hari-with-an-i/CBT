@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Dialog, DialogPanel } from '@headlessui/react'
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
-import './index.css'
+import '../index.css'
 
 const navigation = [
   { name: 'Product', href: '#' },

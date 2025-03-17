@@ -1,13 +1,13 @@
 'use client'
 
 import './index.css'
-import Navbar from './Navbar'
+import Navbar from './Components/Navbar'
 
 export default function Example() {
 
   return (
     <div className="bg-white">
-      <Navbar />
+      
       <div className="relative isolate px-6 pt-14 lg:px-8">
         <div
           aria-hidden="true"

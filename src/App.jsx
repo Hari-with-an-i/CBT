@@ -1,9 +1,13 @@
-import './App.css'
 import Landingpage from './LandingPage'
+import ToDo from './Components/Div'
+import NavBar from './Components/Navbar'
 
 function App() {
-    return (  
-        <Landingpage />
+    return ( 
+        <>
+            <NavBar />
+            <ToDo />
+        </>
     );
 }
 
