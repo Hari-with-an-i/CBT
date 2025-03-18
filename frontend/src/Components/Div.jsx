@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import '../index.css';
+import NavBar from './Navbar'
 
 export default function ToDo() {
   const [todos, setTodos] = useState([
@@ -39,6 +40,7 @@ export default function ToDo() {
 
   return (
     <div className="bg-gray-100 min-h-screen">
+      <NavBar />
       <div className="pt-16 max-w-lg mx-auto">
         {todos.map((todo, index) => (
           <div
