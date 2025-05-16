@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Dialog, DialogPanel } from '@headlessui/react'
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
 import '../index.css'
+import '../Login'
 
 const navigation = [
   { name: 'Product', href: '#' },
@@ -42,7 +43,7 @@ export default function Navbar(){
                     ))}
                 </div>
                 <div className="hidden lg:flex lg:flex-1 lg:justify-end">
-                    <a href="#" className="text-sm/6 font-semibold text-gray-900">
+                    <a href="../Login" className="text-sm/6 font-semibold text-gray-900">
                     Log in <span aria-hidden="true">&rarr;</span>
                     </a>
                 </div>
