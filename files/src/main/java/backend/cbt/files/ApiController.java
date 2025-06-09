@@ -8,7 +8,7 @@ import java.util.Map;
 @RestController
 public class ApiController {
     // Allow requests from your React app (adjust port if needed)
-    @CrossOrigin(origins = "http://localhost:3000")
+    @CrossOrigin(origins = "http://localhost:5173")
     @GetMapping("/api/message")
     public Map<String, String> getMessage() {
         Map<String, String> response = new HashMap<>();
