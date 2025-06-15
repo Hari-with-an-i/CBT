@@ -1,5 +1,6 @@
 import React from "react";
 import "./SidebarPattern.css"; // We'll move the pattern background here
+import ToDo from './Div';
 
 const Sidebar = () => {
   return (
@@ -28,7 +29,7 @@ const Sidebar = () => {
 
         {/* Analytics */}
         <a
-          href="#analytics"
+          href="ToDo"
           className="flex aspect-square w-16 flex-col items-center justify-center gap-1 rounded-md p-1.5 text-gray-700 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-slate-800"
         >
           <svg
@@ -45,7 +46,7 @@ const Sidebar = () => {
               d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75c0 .621-.504 1.125-1.125 1.125h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z"
             />
           </svg>
-          <small className="text-center text-xs font-medium">Analytics</small>
+          <small className="text-center text-xs font-medium">ToDo</small>
         </a>
 
         {/* Settings */}

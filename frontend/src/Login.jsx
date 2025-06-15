@@ -1,11 +1,13 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Sidebar from "./Components/Sidebar";
-import "./Components/SidebarPattern.css"; // Contains the .pattern class
+import "./Components/SidebarPattern.css";
 
 const AuthPage = () => {
   const [isLogin, setIsLogin] = useState(true);
   const [form, setForm] = useState({ email: "", password: "", confirmPassword: "" });
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
 
@@ -31,7 +33,11 @@ const AuthPage = () => {
       if (response.ok) {
         alert(data.message);
         setForm({ email: "", password: "", confirmPassword: "" });
-        // TODO: add redirect or update auth state here
+        if (!isLogin) {
+          setIsLogin(true); 
+        } else {
+          navigate("/ToDo");
+        }
       } else {
         alert(data.error);
       }

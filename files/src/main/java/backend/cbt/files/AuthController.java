@@ -38,7 +38,17 @@ public class AuthController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error", e.getMessage()));
         }
     }
-
+    @PostMapping("/check-user")
+    public ResponseEntity<?> checkUser(@RequestBody Map<String, String> request) {
+        try {
+            String email = request.get("email");
+            boolean exists = userService.findByEmail(email);
+            return ResponseEntity.ok(Map.of("exists", exists));
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("error", e.getMessage()));
+        }
+    }
+    
     @GetMapping("/test")
     public ResponseEntity<?> test() {
     return ResponseEntity.ok(Map.of("message", "Test endpoint works"));
