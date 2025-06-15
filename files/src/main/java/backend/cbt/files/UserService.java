@@ -15,6 +15,7 @@ public class UserService {
     @Autowired
     private MongoTemplate mongoTemplate;
 
+<<<<<<< HEAD
     public boolean findByEmail(String email) {
         logger.info("Checking if user exists with email: {}", email);
         Query query = new Query(Criteria.where("email").is(email));
@@ -37,6 +38,17 @@ public class UserService {
             logger.error("Email already exists: {}", email);
             throw new RuntimeException("Email already exists");
         }
+=======
+    public void signup(String email, String password) {
+        logger.info("Signup attempt for email: {}", email);
+        // Check if email already exists
+        Query query = new Query(Criteria.where("email").is(email));
+        User existingUser = mongoTemplate.findOne(query, User.class);
+        if (existingUser != null) {
+            logger.error("Email already exists: {}", email);
+            throw new RuntimeException("Email already exists");
+        }
+>>>>>>> 9948b1475b6192f09195de6ef5e3efebdeef02d3
 
         // Save new user
         User user = new User(email, password);
