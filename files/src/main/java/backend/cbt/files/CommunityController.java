@@ -23,24 +23,4 @@ public class CommunityController {
         return ResponseEntity.ok(createdCommunity);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Community> updateCommunity(@PathVariable String id, @RequestBody Community community) {
-        logger.info("Received request to update community with id: {}", id);
-        Community updatedCommunity = communityService.updateCommunity(id, community);
-        return ResponseEntity.ok(updatedCommunity);
-    }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteCommunity(@PathVariable String id) {
-        logger.info("Received request to delete community with id: {}", id);
-        communityService.deleteCommunity(id);
-        return ResponseEntity.noContent().build();
-    }
-
-    @GetMapping("/search")
-    public ResponseEntity<List<Community>> searchCommunities(@RequestParam String name) {
-        logger.info("Received request to search communities with name: {}", name);
-        List<Community> communities = communityService.searchCommunitiesByName(name);
-        return ResponseEntity.ok(communities);
-    }
 }
