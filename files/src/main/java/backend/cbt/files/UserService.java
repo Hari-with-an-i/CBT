@@ -15,6 +15,19 @@ public class UserService {
     @Autowired
     private MongoTemplate mongoTemplate;
 
+    public boolean findByEmail(String email) {
+        logger.info("Checking if user exists with email: {}", email);
+        Query query = new Query(Criteria.where("email").is(email));
+        User user = mongoTemplate.findOne(query, User.class);
+        if (user != null) {
+            logger.info("User found with email: {}", email);
+            return true;
+        } else {
+            logger.info("No user found with email: {}", email);
+            return false;
+        }
+    }
+    
     public void signup(String email, String password) {
         logger.info("Signup attempt for email: {}", email);
         // Check if email already exists
