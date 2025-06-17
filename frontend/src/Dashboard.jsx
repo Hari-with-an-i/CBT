@@ -1,20 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { CheckCircleIcon, UserGroupIcon, StarIcon } from '@heroicons/react/24/outline';
-
-// Mock data for development (replace with API data)
-const mockTasks = [
-  { id: '1', title: 'Complete Q2 Report', description: 'Finish quarterly report for team', dueDate: '2025-06-15', status: 'To Do' },
-  { id: '2', title: 'Plan Community Event', description: 'Organize study group meetup', dueDate: '2025-06-20', status: 'To Do' },
-  { id: '3', title: 'Update Profile', description: 'Add profile picture and bio', dueDate: '2025-06-18', status: 'In Progress' },
-];
-const mockCommunities = [
-  { id: '1', name: 'Study Group', description: 'Collaborate on learning projects' },
-  { id: '2', name: 'Fitness Club', description: 'Track fitness goals together' },
-  { id: '3', name: 'Book Club', description: 'Discuss monthly book picks' },
-];
-const mockPoints = { totalPoints: 150 };
 
 const Dashboard = () => {
   const [tasks, setTasks] = useState([]);
@@ -30,44 +17,83 @@ const Dashboard = () => {
     status: 'To Do',
   });
   const [formError, setFormError] = useState('');
-  const userId = 'user123'; // Replace with actual user ID from auth context or localStorage
+  const [formLoading, setFormLoading] = useState(false);
+  const [taskLoading, setTaskLoading] = useState({}); // Track loading state per task
+
+  const navigate = useNavigate();
+
+  // Get userId and token from localStorage
+  const userId = localStorage.getItem('userId');
+  const token = localStorage.getItem('token');
 
   // Fetch data from backend
   useEffect(() => {
+    // Redirect to login if userId or token is missing
+    if (!userId || !token) {
+      setError('You must be logged in to access the dashboard.');
+      setTimeout(() => navigate('/'), 3000);
+      return;
+    }
+
     const fetchData = async () => {
       try {
-        const token = localStorage.getItem('token');
         const config = { headers: { Authorization: `Bearer ${token}` } };
 
         // Fetch tasks
+        console.log(`Fetching tasks for user: ${userId}`);
         const tasksResponse = await axios.get(`http://localhost:8080/api/tasks/user/${userId}`, config);
+        console.log('Tasks response:', tasksResponse.data);
         setTasks(tasksResponse.data.slice(0, 5)); // Limit to 5 tasks
+
         // Fetch communities
+        console.log(`Fetching communities for user: ${userId}`);
         const communitiesResponse = await axios.get(`http://localhost:8080/api/communities/user/${userId}`, config);
+        console.log('Communities response:', communitiesResponse.data);
         setCommunities(communitiesResponse.data.slice(0, 3)); // Limit to 3 communities
+
         // Fetch points
+        console.log(`Fetching points for user: ${userId}`);
         const pointsResponse = await axios.get(`http://localhost:8080/api/users/${userId}/points`, config);
+        console.log('Points response:', pointsResponse.data);
         setPoints(pointsResponse.data.totalPoints);
       } catch (err) {
-        // Fallback to mock data on error
-        setTasks(mockTasks);
-        setCommunities(mockCommunities);
-        setPoints(mockPoints.totalPoints);
-        setError('Failed to fetch data. Using mock data.');
+        console.error('Fetch error:', err);
+        if (err.response?.status === 401) {
+          setError('Session expired. Please log in again.');
+          localStorage.removeItem('token');
+          localStorage.removeItem('userId');
+          setTimeout(() => navigate('/'), 3000);
+        } else {
+          setError(`Failed to fetch data: ${err.message}. Please try again later.`);
+        }
       } finally {
         setLoading(false);
       }
     };
 
     fetchData();
-  }, []);
+  }, [userId, token, navigate]);
 
-  // Handle task completion (mock implementation)
-  const handleTaskComplete = (taskId) => {
-    setTasks(tasks.map(task => 
-      task.id === taskId ? { ...task, status: 'Done' } : task
-    ));
-    // TODO: Call API to update task status (e.g., PATCH /api/tasks/{taskId})
+  // Handle task completion
+  const handleTaskComplete = async (taskId) => {
+    setTaskLoading((prev) => ({ ...prev, [taskId]: true }));
+    try {
+      const config = { headers: { Authorization: `Bearer ${token}` } };
+      console.log(`Marking task ${taskId} as Done`);
+      await axios.patch(`http://localhost:8080/api/tasks/${taskId}`, { status: 'Done' }, config);
+      console.log(`Task ${taskId} marked as Done`);
+      setTasks(tasks.map(task =>
+        task.id === taskId ? { ...task, status: 'Done' } : task
+      ));
+      // Fetch updated points
+      const pointsResponse = await axios.get(`http://localhost:8080/api/users/${userId}/points`, config);
+      setPoints(pointsResponse.data.totalPoints);
+    } catch (err) {
+      console.error('Task completion error:', err);
+      setError(`Failed to complete task: ${err.message}`);
+    } finally {
+      setTaskLoading((prev) => ({ ...prev, [taskId]: false }));
+    }
   };
 
   // Open/close modal
@@ -91,20 +117,24 @@ const Dashboard = () => {
       return;
     }
 
+    setFormLoading(true);
     try {
-      const token = localStorage.getItem('token');
+      const config = { headers: { Authorization: `Bearer ${token}` } };
       const newTask = {
         ...formData,
         userId,
         dueDate: formData.dueDate || null, // Handle empty due date
       };
-      const response = await axios.post('http://localhost:8080/api/tasks', newTask, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      console.log('Creating new task:', newTask);
+      const response = await axios.post('http://localhost:8080/api/tasks', newTask, config);
+      console.log('Task created:', response.data);
       setTasks([response.data, ...tasks].slice(0, 5)); // Add new task, keep max 5
       toggleModal();
     } catch (err) {
-      setFormError('Failed to add task. Please try again.');
+      console.error('Add task error:', err);
+      setFormError(`Failed to add task: ${err.message}`);
+    } finally {
+      setFormLoading(false);
     }
   };
 
@@ -150,11 +180,40 @@ const Dashboard = () => {
                           </div>
                           <button
                             onClick={() => handleTaskComplete(task.id)}
-                            disabled={task.status === 'Done'}
-                            className={`p-2 rounded-full ${task.status === 'Done' ? 'text-gray-400' : 'text-blue-500 hover:bg-blue-100'}`}
+                            disabled={task.status === 'Done' || taskLoading[task.id]}
+                            className={`p-2 rounded-full flex items-center justify-center ${
+                              task.status === 'Done'
+                                ? 'text-gray-400'
+                                : taskLoading[task.id]
+                                ? 'text-gray-400'
+                                : 'text-blue-500 hover:bg-blue-100'
+                            }`}
                             aria-label={`Mark ${task.title} as complete`}
                           >
-                            <CheckCircleIcon className="h-6 w-6" />
+                            {taskLoading[task.id] ? (
+                              <svg
+                                className="animate-spin h-6 w-6 text-blue-500"
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                              >
+                                <circle
+                                  className="opacity-25"
+                                  cx="12"
+                                  cy="12"
+                                  r="10"
+                                  stroke="currentColor"
+                                  strokeWidth="4"
+                                />
+                                <path
+                                  className="opacity-75"
+                                  fill="currentColor"
+                                  d="M4 12a8 8 0 018-8v4l-3 3h-5z"
+                                />
+                              </svg>
+                            ) : (
+                              <CheckCircleIcon className="h-6 w-6" />
+                            )}
                           </button>
                         </div>
                       </div>
@@ -262,6 +321,7 @@ const Dashboard = () => {
                     className="mt-1 w-full p-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
                     required
                     aria-required="true"
+                    disabled={formLoading}
                   />
                 </div>
                 <div className="mb-4">
@@ -275,6 +335,7 @@ const Dashboard = () => {
                     onChange={handleInputChange}
                     className="mt-1 w-full p-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
                     rows="3"
+                    disabled={formLoading}
                   />
                 </div>
                 <div className="mb-4">
@@ -288,6 +349,7 @@ const Dashboard = () => {
                     value={formData.dueDate}
                     onChange={handleInputChange}
                     className="mt-1 w-full p-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
+                    disabled={formLoading}
                   />
                 </div>
                 <div className="mb-4">
@@ -300,6 +362,7 @@ const Dashboard = () => {
                     value={formData.status}
                     onChange={handleInputChange}
                     className="mt-1 w-full p-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
+                    disabled={formLoading}
                   >
                     <option value="To Do">To Do</option>
                     <option value="In Progress">In Progress</option>
@@ -311,15 +374,43 @@ const Dashboard = () => {
                     onClick={toggleModal}
                     className="px-4 py-2 bg-gray-300 text-gray-800 rounded-lg hover:bg-gray-400"
                     aria-label="Cancel adding task"
+                    disabled={formLoading}
                   >
                     Cancel
                   </button>
                   <button
                     type="submit"
-                    className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
+                    className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 flex items-center justify-center"
                     aria-label="Save new task"
+                    disabled={formLoading}
                   >
-                    Save
+                    {formLoading ? (
+                      <>
+                        <svg
+                          className="animate-spin h-5 w-5 mr-2 text-white"
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                        >
+                          <circle
+                            className="opacity-25"
+                            cx="12"
+                            cy="12"
+                            r="10"
+                            stroke="currentColor"
+                            strokeWidth="4"
+                          />
+                          <path
+                            className="opacity-75"
+                            fill="currentColor"
+                            d="M4 12a8 8 0 018-8v4l-3 3h-5z"
+                          />
+                        </svg>
+                        Saving...
+                      </>
+                    ) : (
+                      'Save'
+                    )}
                   </button>
                 </div>
               </form>

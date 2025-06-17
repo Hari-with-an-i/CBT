@@ -1,15 +1,15 @@
-package backend.cbt.files;
+package backend.cbt.files.model;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document(collection = "CBT")
+@Document(collection = "users")
 public class User {
-
     @Id
     private String id;
     private String email;
     private String password;
+    private int points;
 
     // Constructors
     public User() {}
@@ -17,9 +17,10 @@ public class User {
     public User(String email, String password) {
         this.email = email;
         this.password = password;
+        this.points = 0;
     }
 
-    // Getters and setters
+    // Getters and Setters
     public String getId() {
         return id;
     }
@@ -43,6 +44,12 @@ public class User {
     public void setPassword(String password) {
         this.password = password;
     }
+
+    public int getPoints() {
+        return points;
+    }
+
+    public void setPoints(int points) {
+        this.points = points;
+    }
 }
-
-
