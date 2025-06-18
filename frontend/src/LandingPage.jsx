@@ -17,21 +17,21 @@ export default function Example() {
         </div>
         <div className="mx-auto max-w-2xl py-16 sm:py-24 lg:py-40">
           <div className="hidden sm:mb-8 sm:flex sm:justify-center">
-            <div className="relative rounded-full px-3 py-1 text-sm/6 text-red-200">
-              Welcome!{' '}
+            <div className="relative rounded-full px-3 py-1 text-sm/6 text-gray-200 font-semibold">
+              Welcome to{' '}
             </div>
           </div>
           <div className="text-center">
-            <h1 className="text-5xl font-semibold tracking-tight text-balance text-red-300 sm:text-7xl">
+            <h1 className="text-5xl font-semibold tracking-tight text-balance text-gray-400 sm:text-7xl">
               Community Based Task Manager
             </h1>
-            <p className="mt-8 text-lg font-medium text-pretty text-red-200 sm:text-xl/8">
+            <p className="mt-8 text-lg font-medium text-pretty text-gray-200 sm:text-xl/8">
               Create, manage, and collaborate on tasks with your community.
             </p>
             <div className="mt-10 flex items-center justify-center gap-x-6">
               <a
                 href="/Login"
-                className="rounded-md bg-red-300 px-3.5 py-2.5 text-sm font-semibold text-white shadow-xs hover:bg-red-400 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                className="rounded-md bg-gray-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-xs hover:bg-gray-400 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
               >
                 Get started
               </a>

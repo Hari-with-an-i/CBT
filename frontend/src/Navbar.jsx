@@ -1,24 +1,24 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import LogoBlack from './assets/LogoBlack.png';
+import LogoWhite from './assets/LogoWhite.png';
 
 const Navbar = () => {
   return (
-    <nav className="bg-red-200 text-white p-0.05 m-0.05 shadow-md">
+    <nav className="bg-gray-700 text-white p-0.05 m-0.05 shadow-md">
       <div className="container mx-0.05 flex justify-between items-center">
         {/* Logo/Title */}
                             <a href="/" className="-m-0.5 p-0.5">
                                 <span className="sr-only">Your Company</span>
                                 <img
                                     alt=""
-                                    src={LogoBlack}
+                                    src={LogoWhite}
                                     className="h-16 w-auto"
                                 />
                             </a>
         
 
         {/* Navigation Links (Desktop) */}
-        <div className="hidden md:flex space-x-6 text-black p-2">
+        <div className="hidden md:flex space-x-6 text-gray-100 p-2">
           <Link
             to="/communities/search"
             className="hover:text-white transition-colors"

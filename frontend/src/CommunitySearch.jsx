@@ -71,7 +71,7 @@ const CommunitySearch = () => {
   return (
     <div className="min-h-screen min-w-screen pattern bg-gray-50 dark:bg-gray-900 overflow-hidden">
       <Navbar />
-      <h2 className="text-2xl font-semibold text-red-200 mb-4 p-4">Search Communities</h2>
+      <h2 className="text-2xl font-semibold text-gray-200 mb-4 p-4">Search Communities</h2>
       {error && <div className="mb-4 p-2 bg-red-100 text-red-700 rounded">{error}</div>}
       {success && <div className="mb-4 p-2 bg-green-100 text-green-700 rounded">{success}</div>}
       <div className="mb-6">
@@ -88,7 +88,7 @@ const CommunitySearch = () => {
       {loading ? (
         <div className="space-y-4">
           {[...Array(3)].map((_, i) => (
-            <div key={i} className="h-24 bg-pink-100 animate-pulse rounded-lg"></div>
+            <div key={i} className="h-24 bg-gray-300 animate-pulse rounded-lg"></div>
           ))}
         </div>
       ) : communities.length === 0 ? (
@@ -96,15 +96,15 @@ const CommunitySearch = () => {
       ) : (
         <div className="space-y-4">
           {communities.map(community => (
-            <div key={community.id} className="p-4 bg-pink-100 rounded-lg shadow-md border border-gray-200">
-              <h3 className="text-lg font-medium text-gray-800">{community.name}</h3>
-              <p className="text-sm text-gray-600">{community.description || 'No description available'}</p>
-              <p className="text-sm text-gray-500 mt-2">
+            <div key={community.id} className="p-4 bg-gray-700 rounded-lg shadow-md">
+              <h3 className="text-lg font-medium text-gray-200">{community.name}</h3>
+              <p className="text-sm text-gray-200">{community.description || 'No description available'}</p>
+              <p className="text-sm text-gray-200 mt-2">
                 Members: {community.memberIds?.length || 0}
               </p>
               <button
                 onClick={() => handleJoin(community.id)}
-                className="mt-2 px-4 py-2 bg-red-300 text-white rounded-lg hover:bg-purple-400 disabled:bg-gray-400"
+                className="mt-2 px-4 py-2 bg-gray-300 text-gray-500 rounded-lg hover:bg-gray-200 disabled:bg-gray-400"
                 disabled={community.memberIds?.includes(userId) || loading}
                 aria-label={`Join ${community.name}`}
               >
