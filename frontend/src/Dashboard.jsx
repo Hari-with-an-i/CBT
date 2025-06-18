@@ -4,6 +4,7 @@ import axios from 'axios';
 import { CheckCircleIcon, UserGroupIcon, StarIcon } from '@heroicons/react/24/outline';
 import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd';
 import Navbar from './Navbar'; // Import the Navbar component
+import "./Components/SidebarPattern.css";
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -160,10 +161,10 @@ const Dashboard = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100">
+    <div className="relative w-screen h-screen pattern bg-gray-50 dark:bg-gray-900 overflow-hidden">
       <Navbar /> {/* Add Navbar at the top */}
       <div className="container mx-auto p-4 sm:p-6 lg:p-8">
-        <h1 className="text-3xl font-bold text-gray-800 mb-6">
+        <h1 className="text-3xl font-bold text-red-200 mb-6">
           Welcome, User!
         </h1>
 
@@ -175,9 +176,9 @@ const Dashboard = () => {
 
         <div className="grid gap-6 md:grid-cols-2">
           {/* Task List Section */}
-          <div className="bg-white p-6 rounded-lg shadow-md">
+          <div className="bg-pink-100 p-6 rounded-lg shadow-md">
             <h2 className="text-xl font-semibold text-gray-800 mb-4 flex items-center">
-              <CheckCircleIcon className="h-6 w-6 mr-2 text-blue-500" />
+              <CheckCircleIcon className="h-6 w-6 mr-2 text-red-400" />
               Your Tasks
             </h2>
 
@@ -205,7 +206,7 @@ const Dashboard = () => {
                               ref={provided.innerRef}
                               {...provided.draggableProps}
                               {...provided.dragHandleProps}
-                              className="p-4 bg-gray-50 rounded-lg border border-gray-200"
+                              className="p-4 bg-white rounded-lg border border-gray-200"
                               role="listitem"
                             >
                               <div className="flex justify-between items-start">
@@ -306,12 +307,12 @@ const Dashboard = () => {
             <div className="mt-4 flex justify-between">
               <button
                 onClick={toggleModal}
-                className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
+                className="px-4 py-2 bg-red-300 text-white rounded-lg hover:bg-red-400"
                 aria-label="Add new task"
               >
                 Add Task
               </button>
-              <Link to="/tasks" className="text-blue-500 hover:underline" aria-label="View all tasks">
+              <Link to="/tasks" className="text-red-400 hover:underline" aria-label="View all tasks">
                 View All
               </Link>
             </div>
@@ -319,9 +320,9 @@ const Dashboard = () => {
 
           {/* Communities and Points Section */}
           <div className="space-y-6">
-            <div className="bg-white p-6 rounded-lg shadow-md">
+            <div className="bg-pink-100 p-6 rounded-lg shadow-md">
               <h2 className="text-xl font-semibold text-gray-800 mb-4 flex items-center">
-                <UserGroupIcon className="h-6 w-6 mr-2 text-blue-500" />
+                <UserGroupIcon className="h-6 w-6 mr-2 text-red-400" />
                 Your Communities
               </h2>
               {loading ? (
@@ -337,36 +338,36 @@ const Dashboard = () => {
                   ) : (
                     <div className="space-y-4">
                       {communities.map(community => (
-                        <div key={community.id} className="p-4 bg-gray-50 rounded-lg border border-gray-200">
+                        <div key={community.id} className="p-4 bg-purple-100 rounded-lg border border-gray-200">
                           <h3 className="text-lg font-medium text-gray-800">{community.name}</h3>
                           <p className="text-sm text-gray-600">{community.description}</p>
                         </div>
                       ))}
                     </div>
                   )}
-                  <Link to="/communities" className="mt-4 block text-blue-500 hover:underline" aria-label="See more communities">
+                  <Link to="/communities" className="mt-4 block text-red-400 hover:underline" aria-label="See more communities">
                     See More
                   </Link>
                 </>
               )}
             </div>
 
-            <div className="bg-blue-100 p-6 rounded-lg shadow-md text-center">
+            <div className="bg-pink-100 p-6 rounded-lg shadow-md text-center">
               <h2 className="text-xl font-semibold text-gray-800 flex items-center justify-center">
                 <StarIcon className="h-6 w-6 mr-2 text-yellow-500" />
                 Your Points
               </h2>
-              <p className="text-4xl font-bold text-blue-600 mt-2 animate-pulse">
+              <p className="text-4xl font-bold text-red-300 mt-2 animate-pulse">
                 {points}
               </p>
             </div>
 
-            <div className="bg-gradient-to-r from-blue-500 to-blue-600 text-white p-6 rounded-lg shadow-md text-center">
+            <div className="bg-gradient-to-r from-pink-100 to-red-200 text-black p-6 rounded-lg shadow-md text-center">
               <h2 className="text-xl font-semibold">Discover New Communities</h2>
               <p className="text-sm mt-2">Join vibrant groups and collaborate with others!</p>
               <Link
                 to="/communities/search"
-                className="mt-4 inline-block px-6 py-2 bg-white text-blue-600 font-medium rounded-lg hover:bg-gray-100"
+                className="mt-4 inline-block px-6 py-2 bg-white text-red-300 font-medium rounded-lg hover:bg-gray-100"
                 aria-label="Join a new community"
               >
                 Join Now

@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import Navbar from './Navbar'
+import "./Components/SidebarPattern.css";
+
 
 const CommunitySearch = () => {
   const navigate = useNavigate();
@@ -66,8 +69,9 @@ const CommunitySearch = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 p-4 sm:p-6 lg:p-8">
-      <h2 className="text-2xl font-semibold text-gray-800 mb-4">Search Communities</h2>
+    <div className="min-h-screen min-w-screen pattern bg-gray-50 dark:bg-gray-900 overflow-hidden">
+      <Navbar />
+      <h2 className="text-2xl font-semibold text-red-200 mb-4 p-4">Search Communities</h2>
       {error && <div className="mb-4 p-2 bg-red-100 text-red-700 rounded">{error}</div>}
       {success && <div className="mb-4 p-2 bg-green-100 text-green-700 rounded">{success}</div>}
       <div className="mb-6">
@@ -76,7 +80,7 @@ const CommunitySearch = () => {
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           placeholder="Search communities by name..."
-          className="w-full p-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
+          className="w-full text-white p-2 border border-gray-300 rounded-lg focus:ring-purple-500 focus:border-purple-600"
           aria-label="Search communities"
           disabled={loading}
         />
@@ -84,7 +88,7 @@ const CommunitySearch = () => {
       {loading ? (
         <div className="space-y-4">
           {[...Array(3)].map((_, i) => (
-            <div key={i} className="h-24 bg-gray-200 animate-pulse rounded-lg"></div>
+            <div key={i} className="h-24 bg-pink-100 animate-pulse rounded-lg"></div>
           ))}
         </div>
       ) : communities.length === 0 ? (
@@ -92,7 +96,7 @@ const CommunitySearch = () => {
       ) : (
         <div className="space-y-4">
           {communities.map(community => (
-            <div key={community.id} className="p-4 bg-white rounded-lg shadow-md border border-gray-200">
+            <div key={community.id} className="p-4 bg-pink-100 rounded-lg shadow-md border border-gray-200">
               <h3 className="text-lg font-medium text-gray-800">{community.name}</h3>
               <p className="text-sm text-gray-600">{community.description || 'No description available'}</p>
               <p className="text-sm text-gray-500 mt-2">
@@ -100,7 +104,7 @@ const CommunitySearch = () => {
               </p>
               <button
                 onClick={() => handleJoin(community.id)}
-                className="mt-2 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 disabled:bg-gray-400"
+                className="mt-2 px-4 py-2 bg-red-300 text-white rounded-lg hover:bg-purple-400 disabled:bg-gray-400"
                 disabled={community.memberIds?.includes(userId) || loading}
                 aria-label={`Join ${community.name}`}
               >

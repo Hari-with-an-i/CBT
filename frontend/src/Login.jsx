@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Sidebar from "./Components/Sidebar";
 import "./Components/SidebarPattern.css";
+import NavBar from "./Components/Navbar";
 
 const AuthPage = () => {
   const [isLogin, setIsLogin] = useState(true);
@@ -56,8 +56,8 @@ const AuthPage = () => {
   };
 
   return (
-    <div className="relative w-screen h-screen pattern bg-gray-50 dark:bg-slate-900 overflow-hidden">
-      <Sidebar />
+    <div className="relative w-screen h-screen pattern bg-gray-50 dark:bg-gray-900 overflow-hidden">
+      <NavBar />
       <div className="flex items-center justify-center min-h-screen">
         <div className="bg-opacity-90 backdrop-blur-md p-8 rounded-xl shadow-xl w-full max-w-md border border-gray-200 z-10">
           <h2 className="text-3xl font-bold text-center text-white mb-6">
@@ -103,7 +103,7 @@ const AuthPage = () => {
             )}
             <button
               type="submit"
-              className="w-full py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-full transition duration-300 flex items-center justify-center"
+              className="w-full py-2 bg-red-300 hover:bg-red-400 text-white rounded-full transition duration-300 flex items-center justify-center"
               disabled={loading}
             >
               {loading ? (
@@ -138,7 +138,7 @@ const AuthPage = () => {
           <p className="text-center mt-4 text-sm text-white">
             {isLogin ? "Don't have an account?" : "Already have an account?"}{" "}
             <button
-              className="text-purple-600 hover:underline font-medium"
+              className="text-red-300 hover:underline font-medium"
               onClick={() => setIsLogin(!isLogin)}
               disabled={loading}
             >
