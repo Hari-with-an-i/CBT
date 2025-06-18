@@ -57,4 +57,10 @@ public class UserService {
         return userRepository.findById(userId)
             .orElseThrow(() -> new RuntimeException("User not found"));
     }
+
+    // New method to save or update user
+    public User saveUser(User user) {
+        logger.info("Saving user with id: {} and points: {}", user.getId(), user.getPoints());
+        return userRepository.save(user);
+    }
 }

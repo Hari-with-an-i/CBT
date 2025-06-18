@@ -3,25 +3,29 @@ package backend.cbt.files.model;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.time.LocalDate;
+
 @Document(collection = "tasks")
 public class Task {
     @Id
     private String id;
+    private String userId;
     private String title;
     private String description;
-    private String dueDate;
+    private LocalDate dueDate;
     private String status;
-    private String userId;
+    private String category; // "Personal" or "Community"
 
     // Constructors
     public Task() {}
 
-    public Task(String title, String description, String dueDate, String status, String userId) {
+    public Task(String userId, String title, String description, LocalDate dueDate, String status, String category) {
+        this.userId = userId;
         this.title = title;
         this.description = description;
         this.dueDate = dueDate;
         this.status = status;
-        this.userId = userId;
+        this.category = category;
     }
 
     // Getters and Setters
@@ -31,6 +35,14 @@ public class Task {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     public String getTitle() {
@@ -49,11 +61,11 @@ public class Task {
         this.description = description;
     }
 
-    public String getDueDate() {
+    public LocalDate getDueDate() {
         return dueDate;
     }
 
-    public void setDueDate(String dueDate) {
+    public void setDueDate(LocalDate dueDate) {
         this.dueDate = dueDate;
     }
 
@@ -65,11 +77,11 @@ public class Task {
         this.status = status;
     }
 
-    public String getUserId() {
-        return userId;
+    public String getCategory() {
+        return category;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public void setCategory(String category) {
+        this.category = category;
     }
 }

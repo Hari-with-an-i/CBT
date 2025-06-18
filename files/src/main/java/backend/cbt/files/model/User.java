@@ -11,13 +11,12 @@ public class User {
     private String password;
     private int points;
 
-    // Constructors
     public User() {}
 
     public User(String email, String password) {
         this.email = email;
         this.password = password;
-        this.points = 0;
+        this.points = 0; // Initialize points to 0
     }
 
     // Getters and Setters

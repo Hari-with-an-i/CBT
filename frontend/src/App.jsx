@@ -4,6 +4,9 @@ import ToDo from './Components/Div'
 import Login from './Login';
 import Dashboard from './Dashboard';
 import Community from './Community';
+import Navbar from './Navbar.jsx'
+import CommunityCreate from './CommunityCreate.jsx';
+import CommunitySearch from './CommunitySearch.jsx';
 
 function App() {
 
@@ -14,8 +17,13 @@ function App() {
             <Route path='/ToDo' element={<ToDo />}/>
             <Route path='/Login' element={<Login />}/>
             <Route path="/Dashboard" element={<Dashboard />} />
-            <Route path="/communities/search" element={<div>Search Communities</div>} />
+            <Route path="/communities/search" element={<CommunitySearch />} />
             <Route path='/Community' element={<Community />}/>
+            <Route path='/Navbar' element={<Navbar />}/>
+            <Route path='/communities/create' element={<CommunityCreate />} />
+            <Route path='/tasks' element={<div>View All Tasks</div>} />
+            <Route path='/profile' element={<div>Profile</div>} />
+            
         </Routes>
     </Router>        
 

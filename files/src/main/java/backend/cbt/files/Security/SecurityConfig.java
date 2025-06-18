@@ -25,26 +25,24 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http, JwtRequestFilter jwtRequestFilter) throws Exception {
         logger.info("Configuring SecurityFilterChain");
         http
-            // Disable CSRF as we're using stateless JWT authentication
             .csrf(csrf -> {
                 csrf.disable();
                 logger.debug("CSRF protection disabled");
             })
-            // Configure CORS explicitly
             .cors(cors -> cors.configurationSource(corsConfigurationSource()))
-            // Use stateless session management
             .sessionManagement(session -> {
                 session.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
                 logger.debug("Session management set to STATELESS");
             })
-            // Configure authorization rules
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/api/auth/**").permitAll()
+                .requestMatchers("/error").permitAll() // Allow /error without authentication
                 .requestMatchers("OPTIONS/**").permitAll()
                 .requestMatchers("/api/tasks/**").authenticated()
+                .requestMatchers("/api/communities/**").authenticated()
+                .requestMatchers("/api/users/**").authenticated()
                 .anyRequest().authenticated()
             )
-            // Handle authentication and access denied exceptions
             .exceptionHandling(ex -> ex
                 .authenticationEntryPoint((request, response, authException) -> {
                     logger.error("Authentication failed for request {}: {}", request.getRequestURI(), authException.getMessage());
@@ -55,7 +53,6 @@ public class SecurityConfig {
                     response.sendError(HttpServletResponse.SC_FORBIDDEN, "Forbidden: " + accessDeniedException.getMessage());
                 })
             )
-            // Add JWT filter before UsernamePasswordAuthenticationFilter
             .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
 
         logger.info("SecurityFilterChain configured successfully");

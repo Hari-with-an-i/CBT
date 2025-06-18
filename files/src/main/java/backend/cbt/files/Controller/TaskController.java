@@ -32,8 +32,8 @@ public class TaskController {
     @PostMapping
     public ResponseEntity<Task> createTask(@RequestBody Task task) {
         logger.info("Received POST request to create task for user: {}", task.getUserId());
-        logger.debug("Task details: title={}, description={}, dueDate={}, status={}", 
-            task.getTitle(), task.getDescription(), task.getDueDate(), task.getStatus());
+        logger.debug("Task details: title={}, description={}, dueDate={}, status={}, category={}", 
+            task.getTitle(), task.getDescription(), task.getDueDate(), task.getStatus(), task.getCategory());
         Task createdTask = taskService.createTask(task);
         logger.info("Task created successfully with ID: {}", createdTask.getId());
         return ResponseEntity.status(HttpStatus.CREATED).body(createdTask);
@@ -51,5 +51,13 @@ public class TaskController {
             logger.error("Failed to update task status: {}", e.getMessage());
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
+    }
+
+    @DeleteMapping("/{taskId}")
+    public ResponseEntity<Void> deleteTask(@PathVariable String taskId) {
+        logger.info("Deleting task with ID: {}", taskId);
+        taskService.deleteTask(taskId);
+        logger.debug("Task {} deleted successfully", taskId);
+        return ResponseEntity.noContent().build();
     }
 }
