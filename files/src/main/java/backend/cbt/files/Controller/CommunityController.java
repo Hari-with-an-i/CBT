@@ -28,6 +28,12 @@ public class CommunityController {
         return ResponseEntity.ok(communities);
     }
 
+    @GetMapping("/{communityId}/members")
+    public List<String> getCommunityMembers(@PathVariable String communityId) {
+        Community community = communityService.getCommunityById(communityId);
+        return community.getMemberIds();
+    }
+
     @PostMapping
     public ResponseEntity<Community> createCommunity(@RequestBody Map<String, String> request) {
         try {

@@ -1,35 +1,44 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import LogoWhite from './assets/LogoWhite.png';
 
 const Navbar = () => {
   return (
-    <nav className="bg-blue-600 text-white p-4 shadow-md">
-      <div className="container mx-auto flex justify-between items-center">
+    <nav className="bg-gray-700 text-white p-0.05 m-0.05 shadow-md">
+      <div className="container mx-0.05 flex justify-between items-center">
         {/* Logo/Title */}
-        <div className="text-xl font-bold">CBT Dashboard</div>
+                            <a href="/" className="-m-0.5 p-0.5">
+                                <span className="sr-only">Your Company</span>
+                                <img
+                                    alt=""
+                                    src={LogoWhite}
+                                    className="h-16 w-auto"
+                                />
+                            </a>
+        
 
         {/* Navigation Links (Desktop) */}
-        <div className="hidden md:flex space-x-6">
+        <div className="hidden md:flex space-x-6 text-gray-100 p-2">
           <Link
             to="/communities/search"
-            className="hover:text-blue-200 transition-colors"
+            className="hover:text-white transition-colors"
             aria-label="Join a community"
           >
             Join Community
           </Link>
           <Link
             to="/communities/create"
-            className="hover:text-blue-200 transition-colors"
+            className="hover:text-white transition-colors"
             aria-label="Create a community"
           >
             Create Community
           </Link>
           <Link
-            to="/tasks"
-            className="hover:text-blue-200 transition-colors"
-            aria-label="View all tasks"
+            to="/Dashboard"
+            className="hover:text-white transition-colors"
+            aria-label="Dashboard"
           >
-            View All Tasks
+            Dashboard
           </Link>
         </div>
 
@@ -75,11 +84,11 @@ const Navbar = () => {
               Create Community
             </Link>
             <Link
-              to="/tasks"
+              to="/Dashboard"
               className="hover:text-blue-200 transition-colors"
-              aria-label="View all tasks"
+              aria-label="Dashboard"
             >
-              View All Tasks
+              Dashboard
             </Link>
           </div>
         </div>

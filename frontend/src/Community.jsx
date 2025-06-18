@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom"; // Added for navigation
-import Sidebar from "./Components/Sidebar";
 import "./Components/SidebarPattern.css";
 
 const Community = () => {

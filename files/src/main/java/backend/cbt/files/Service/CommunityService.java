@@ -21,6 +21,12 @@ public class CommunityService {
         return communityRepository.findByMemberIdsContaining(userId);
     }
 
+    public Community getCommunityById(String communityId) {
+    logger.info("Fetching community with ID: {}", communityId);
+    return communityRepository.findById(communityId)
+        .orElseThrow(() -> new RuntimeException("Community not found"));
+    }
+
     public Community createCommunity(String userId, String name, String description) {
         logger.info("Creating community for user: {}, name: {}", userId, name);
         if (name == null || name.trim().isEmpty()) {
