@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { CheckCircleIcon, UserGroupIcon, StarIcon } from '@heroicons/react/24/outline';
 import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd';
-import Navbar from './Navbar'; // Import the Navbar component
+import Navbar from './Navbar';
 import "./Components/SidebarPattern.css";
 
 const Dashboard = () => {
@@ -82,7 +82,7 @@ const Dashboard = () => {
         task.id === taskId ? { ...task, status: 'Completed' } : task
       ));
 
-      await new Promise(resolve => setTimeout(resolve, 500)); // Wait 500ms for database update
+      await new Promise(resolve => setTimeout(resolve, 500));
       const pointsResponse = await axios.get(`http://localhost:8080/api/users/${userId}/points`, config);
       console.log('Updated points response:', pointsResponse.data);
       setPoints(pointsResponse.data.totalPoints || 0);
@@ -162,7 +162,7 @@ const Dashboard = () => {
 
   return (
     <div className="relative w-screen h-screen pattern bg-gray-50 dark:bg-gray-900 overflow-hidden">
-      <Navbar /> {/* Add Navbar at the top */}
+      <Navbar />
       <div className="container mx-auto p-4 sm:p-6 lg:p-8">
         <h1 className="text-3xl font-bold text-gray-200 mb-6">
           Welcome, User!
@@ -175,9 +175,8 @@ const Dashboard = () => {
         )}
 
         <div className="grid gap-6 md:grid-cols-2">
-          {/* Task List Section */}
           <div className="bg-gray-700 p-6 rounded-lg shadow-md">
-            <h2 className="text-xl font-semibold text-gray-200 mb-4 flex items-center">
+            <h2 className="text-xl font-semibold text-gray-200 mb-.​4 flex items-center">
               <CheckCircleIcon className="h-6 w-6 mr-2 text-gray-300" />
               Your Tasks
             </h2>
@@ -318,7 +317,6 @@ const Dashboard = () => {
             </div>
           </div>
 
-          {/* Communities and Points Section */}
           <div className="space-y-6">
             <div className="bg-gray-700 p-6 rounded-lg shadow-md">
               <h2 className="text-xl font-semibold text-gray-200 mb-4 flex items-center">
@@ -338,10 +336,15 @@ const Dashboard = () => {
                   ) : (
                     <div className="space-y-4">
                       {communities.map(community => (
-                        <div key={community.id} className="p-4 bg-gray-200 rounded-lg border border-gray-200">
+                        <Link
+                          key={community.id}
+                          to={`/communities/${community.id}`}
+                          className="block p-4 bg-gray-200 rounded-lg border border-gray-200 hover:bg-gray-300 transition-colors"
+                          aria-label={`View community ${community.name}`}
+                        >
                           <h3 className="text-lg font-medium text-gray-800">{community.name}</h3>
                           <p className="text-sm text-gray-600">{community.description}</p>
-                        </div>
+                        </Link>
                       ))}
                     </div>
                   )}
@@ -376,7 +379,6 @@ const Dashboard = () => {
           </div>
         </div>
 
-        {/* Add Task Modal */}
         {isModalOpen && (
           <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
             <div className="bg-white p-6 rounded-lg shadow-xl max-w-md w-full">
