@@ -1,7 +1,12 @@
 package backend.cbt.files.Controller;
 
 import backend.cbt.files.model.Community;
+import backend.cbt.files.model.CommunityTask;
+import backend.cbt.files.model.User;
+import jakarta.annotation.PostConstruct;
 import backend.cbt.files.Service.CommunityService;
+import backend.cbt.files.Repository.CommunityRepository;
+import backend.cbt.files.Repository.CommunityTaskRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +26,11 @@ public class CommunityController {
     @Autowired
     private CommunityService communityService;
 
+    @PostConstruct
+    public void init() {
+        logger.info("CommunityController initialized and ready to handle requests");
+    }
+
     @GetMapping("/user/{userId}")
     public ResponseEntity<List<Community>> getCommunitiesByUserId(@PathVariable String userId) {
         logger.info("Fetching communities for user: {}", userId);
@@ -29,9 +39,56 @@ public class CommunityController {
     }
 
     @GetMapping("/{communityId}/members")
-    public List<String> getCommunityMembers(@PathVariable String communityId) {
-        Community community = communityService.getCommunityById(communityId);
-        return community.getMemberIds();
+    public ResponseEntity<List<String>> getCommunityMembers(@PathVariable String communityId) {
+        logger.info("Processing GET /api/communities/{}/members", communityId);
+        try {
+            List<String> members = communityService.getCommunityMembers(communityId);
+            if (members.isEmpty()) {
+                logger.warn("No members found for communityId: {}", communityId);
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+            logger.info("Returning member emails: {}", members);
+            return new ResponseEntity<>(members, HttpStatus.OK);
+        } catch (Exception e) {
+            logger.error("Error fetching members for communityId {}: {}", communityId, e.getMessage());
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/{communityId}/top-users")
+    public ResponseEntity<List<User>> getTopUsers(@PathVariable String communityId, @RequestParam(defaultValue = "3") int limit) {
+        logger.info("Received request to get top {} users for communityId: {} from 'users' collection", limit, communityId);
+        try {
+            List<User> topUsers = communityService.getTopUsersByPoints(communityId, limit);
+            return new ResponseEntity<>(topUsers, HttpStatus.OK);
+        } catch (Exception e) {
+            logger.error("Error fetching top users for communityId {}: {}", communityId, e.getMessage());
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/{communityId}/tasks")
+    public ResponseEntity<List<CommunityTask>> getCommunityTasks(@PathVariable String communityId) {
+        logger.info("Processing GET /api/communities/{}/tasks", communityId);
+        try {
+            List<CommunityTask> tasks = communityService.getCommunityTasks(communityId);
+            return new ResponseEntity<>(tasks, HttpStatus.OK);
+        } catch (Exception e) {
+            logger.error("Error fetching community tasks for communityId {}: {}", communityId, e.getMessage());
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PostMapping("/{communityId}/tasks")
+    public ResponseEntity<CommunityTask> createCommunityTask(@PathVariable String communityId, @RequestBody CommunityTask task) {
+        logger.info("Processing POST /api/communities/{}/tasks with task: {}", communityId, task);
+        try {
+            CommunityTask createdTask = communityService.createCommunityTask(communityId, task);
+            return new ResponseEntity<>(createdTask, HttpStatus.CREATED);
+        } catch (Exception e) {
+            logger.error("Error creating community task for communityId {}: {}", communityId, e.getMessage());
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @PostMapping
