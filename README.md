@@ -52,7 +52,7 @@ To get this project running locally, you will need to run the backend and fronte
 2.  **Navigate to the backend directory:**
     *(I could not see the backend folder name in the screenshot, so please replace `[YOUR_BACKEND_FOLDER]` with the correct name.)*
     ```sh
-    cd [YOUR_BACKEND_FOLDER]
+    cd files
     ```
 
 3.  **Configure the Database:**
