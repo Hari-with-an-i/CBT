@@ -23,10 +23,10 @@ export default function Example() {
           </div>
           <div className="text-center">
             <h1 className="text-5xl font-semibold tracking-tight text-balance text-gray-400 sm:text-7xl">
-              Community Based Task Manager
+              Task-o-Mania
             </h1>
             <p className="mt-8 text-lg font-medium text-pretty text-gray-200 sm:text-xl/8">
-              Create, manage, and collaborate on tasks with your community.
+              Complete tasks, earn points, and climb the leaderboard!
             </p>
             <div className="mt-10 flex items-center justify-center gap-x-6">
               <a
